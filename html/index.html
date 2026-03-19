@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/themes.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <title>Dei Drift</title>
+</head>
+<body data-theme="dark" style="background:transparent!important">
+  <div id="drift-overlay">
+    <div id="drift-card">
+      <!-- Combo / Streak -->
+      <div id="combo-row">
+        <span id="combo-label">COMBO</span>
+        <span id="combo-value">x1</span>
+      </div>
+
+      <!-- Score -->
+      <div id="score-row">
+        <svg id="score-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        <span id="score-value">0</span>
+      </div>
+
+      <!-- Angle arc -->
+      <div id="angle-row">
+        <div id="angle-arc-container">
+          <svg id="angle-arc" viewBox="0 0 80 44" width="80" height="44">
+            <path id="arc-bg" d="M8,40 A32,32 0 0,1 72,40" fill="none" stroke-width="5" stroke-linecap="round"/>
+            <path id="arc-fill" d="M8,40 A32,32 0 0,1 72,40" fill="none" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+          <span id="angle-value">0°</span>
+        </div>
+      </div>
+
+      <!-- Combo Timer Bar -->
+      <div id="combo-timer-bar">
+        <div id="combo-timer-fill"></div>
+      </div>
+
+      <!-- Money earned -->
+      <div id="money-row">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        <span id="money-value">$0</span>
+      </div>
+    </div>
+
+    <!-- Personal Best -->
+    <div id="personal-best">
+      <span id="pb-label">PERSONAL BEST</span>
+      <span id="pb-value">0</span>
+    </div>
+
+    <!-- New Personal Best notification -->
+    <div id="new-pb">
+      <span id="new-pb-text">NEW PERSONAL BEST!</span>
+      <span id="new-pb-score">0</span>
+    </div>
+  </div>
+
+  <!-- Leaderboard Overlay -->
+  <div id="leaderboard-overlay">
+    <div id="leaderboard-card">
+      <div id="lb-header">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        <span>DRIFT LEADERBOARD</span>
+        <button id="lb-close">&times;</button>
+      </div>
+      <div id="lb-list">
+        <div id="lb-empty">No scores yet. Start drifting!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Session Summary Overlay -->
+  <div id="session-overlay">
+    <div id="session-card">
+      <div id="session-header">SESSION SUMMARY</div>
+      <div id="session-stats">
+        <div class="session-stat">
+          <span class="stat-label">TOTAL SCORE</span>
+          <span class="stat-value" id="sess-total">0</span>
+        </div>
+        <div class="session-stat">
+          <span class="stat-label">BEST DRIFT</span>
+          <span class="stat-value" id="sess-best">0</span>
+        </div>
+        <div class="session-stat">
+          <span class="stat-label">COMBOS</span>
+          <span class="stat-value" id="sess-combos">0</span>
+        </div>
+        <div class="session-stat">
+          <span class="stat-label">MONEY EARNED</span>
+          <span class="stat-value" id="sess-money">$0</span>
+        </div>
+        <div class="session-stat">
+          <span class="stat-label">TIME DRIFTING</span>
+          <span class="stat-value" id="sess-time">0s</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

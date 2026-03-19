@@ -1,0 +1,245 @@
+@font-face { font-family: "Gilroy"; src: url(../fonts/Gilroy-Light.otf); font-display: swap }
+@font-face { font-family: "Gilroy-Bold"; src: url(../fonts/Gilroy-ExtraBold.otf); font-display: swap }
+
+* { margin: 0; padding: 0; box-sizing: border-box; user-select: none }
+html, body { background: transparent !important; }
+body { overflow: hidden; font-family: "Gilroy-Bold", sans-serif }
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+/* ===== Overlay container ===== */
+#drift-overlay {
+  position: fixed; top: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 100; pointer-events: none
+}
+
+/* ===== Glass card ===== */
+#drift-card {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 14px 28px 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+  color: var(--text-primary);
+  opacity: 0; transform: translateY(-18px) scale(0.92);
+  transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1), transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  will-change: opacity, transform
+}
+#drift-card.visible {
+  opacity: 1; transform: translateY(0) scale(1)
+}
+#drift-card.hiding {
+  opacity: 0; transform: translateY(-10px) scale(0.96);
+  transition: opacity 0.5s cubic-bezier(0.4,0,0.2,1), transform 0.5s cubic-bezier(0.4,0,0.2,1)
+}
+
+/* ===== Combo row ===== */
+#combo-row {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--text-secondary); opacity: 0; transform: scale(0.8);
+  transition: opacity 0.25s, transform 0.25s
+}
+#combo-row.active { opacity: 1; transform: scale(1) }
+#combo-value {
+  color: var(--accent-yellow); font-size: 13px; font-family: "Gilroy-Bold", sans-serif
+}
+
+/* ===== Score row ===== */
+#score-row {
+  display: flex; align-items: center; gap: 8px
+}
+#score-icon { color: var(--accent-yellow); filter: drop-shadow(0 0 6px rgba(251,191,36,0.4)) }
+#score-value {
+  font-size: 38px; font-family: "Gilroy-Bold", sans-serif;
+  font-variant-numeric: tabular-nums; line-height: 1;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), color 0.3s
+}
+#score-value.pop { transform: scale(1.18) }
+#score-value.big { color: var(--accent-yellow); filter: drop-shadow(0 0 12px rgba(251,191,36,0.5)) }
+#score-value.epic { color: var(--accent-red); filter: drop-shadow(0 0 16px rgba(239,68,68,0.6)) }
+
+/* ===== Angle arc ===== */
+#angle-row { display: flex; justify-content: center; margin: 2px 0 }
+#angle-arc-container { position: relative; display: flex; flex-direction: column; align-items: center }
+#arc-bg { stroke: rgba(255,255,255,0.08) }
+#arc-fill { stroke: var(--accent-blue); filter: drop-shadow(0 0 6px rgba(59,130,246,0.4)); transition: stroke-dashoffset 0.1s linear }
+#angle-value {
+  font-size: 13px; color: var(--text-secondary); font-family: "Gilroy", sans-serif;
+  margin-top: -4px
+}
+
+/* ===== Money row ===== */
+#money-row {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 14px; color: var(--accent-green);
+  font-family: "Gilroy-Bold", sans-serif;
+  filter: drop-shadow(0 0 6px rgba(74,222,128,0.3));
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.3s, transform 0.3s
+}
+#money-row.visible { opacity: 1; transform: translateY(0) }
+#money-row svg { color: var(--accent-green) }
+
+/* ===== Combo Timer Bar ===== */
+#combo-timer-bar {
+  width: 100%; height: 3px; border-radius: 2px;
+  background: rgba(255,255,255,0.08); overflow: hidden;
+  margin-top: 2px; opacity: 0; transition: opacity 0.2s
+}
+#drift-card.visible #combo-timer-bar { opacity: 1 }
+#combo-timer-fill {
+  width: 100%; height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent-red), var(--accent-yellow), var(--accent-green));
+  transform-origin: left center;
+  transition: transform 0.05s linear
+}
+
+/* ===== Personal Best ===== */
+#personal-best {
+  display: flex; flex-direction: column; align-items: center;
+  margin-top: 8px; opacity: 0; transition: opacity 0.4s;
+  pointer-events: none
+}
+#personal-best.visible { opacity: 1 }
+#pb-label {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-secondary); font-family: "Gilroy", sans-serif
+}
+#pb-value {
+  font-size: 16px; color: var(--accent-yellow);
+  font-family: "Gilroy-Bold", sans-serif;
+  filter: drop-shadow(0 0 4px rgba(251,191,36,0.3))
+}
+
+/* ===== New Personal Best notification ===== */
+#new-pb {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; pointer-events: none; z-index: 200;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1)
+}
+#new-pb.active {
+  opacity: 1; transform: translate(-50%, -50%) scale(1)
+}
+#new-pb-text {
+  font-size: 24px; font-family: "Gilroy-Bold", sans-serif;
+  color: var(--accent-yellow); text-transform: uppercase; letter-spacing: 3px;
+  text-shadow: 0 0 30px rgba(251,191,36,0.6), 0 0 60px rgba(251,191,36,0.3);
+  animation: none
+}
+#new-pb.active #new-pb-text { animation: pbFlash 0.6s ease-out 3 }
+#new-pb-score {
+  font-size: 42px; font-family: "Gilroy-Bold", sans-serif;
+  color: var(--text-primary);
+  text-shadow: 0 0 20px rgba(251,191,36,0.4)
+}
+@keyframes pbFlash {
+  0%, 100% { opacity: 1 }
+  50% { opacity: 0.4; transform: scale(1.1) }
+}
+
+/* ===== Leaderboard Overlay ===== */
+#leaderboard-overlay {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  z-index: 300; opacity: 0; pointer-events: none;
+  background: rgba(0,0,0,0.5); transition: opacity 0.3s
+}
+#leaderboard-overlay.active { opacity: 1; pointer-events: auto }
+#leaderboard-card {
+  width: 420px; max-height: 80vh;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border); border-radius: 20px;
+  box-shadow: var(--glass-shadow); color: var(--text-primary);
+  padding: 24px; transform: translateY(20px) scale(0.95);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto
+}
+#leaderboard-overlay.active #leaderboard-card { transform: translateY(0) scale(1) }
+#lb-header {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 16px; font-family: "Gilroy-Bold", sans-serif;
+  letter-spacing: 2px; margin-bottom: 20px; color: var(--accent-yellow)
+}
+#lb-header svg { color: var(--accent-yellow); filter: drop-shadow(0 0 6px rgba(251,191,36,0.4)) }
+#lb-close {
+  margin-left: auto; background: none; border: none; color: var(--text-secondary);
+  font-size: 24px; cursor: pointer; line-height: 1; padding: 4px 8px;
+  border-radius: 8px; transition: background 0.2s, color 0.2s
+}
+#lb-close:hover { background: rgba(255,255,255,0.1); color: var(--text-primary) }
+#lb-list { display: flex; flex-direction: column; gap: 6px }
+#lb-empty {
+  text-align: center; color: var(--text-secondary); padding: 30px 0;
+  font-family: "Gilroy", sans-serif; font-size: 14px
+}
+.lb-entry {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; border-radius: 12px;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.2s
+}
+.lb-entry:hover { background: rgba(255,255,255,0.06) }
+.lb-rank {
+  font-size: 18px; font-family: "Gilroy-Bold", sans-serif;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; flex-shrink: 0
+}
+.lb-rank.gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a1a }
+.lb-rank.silver { background: linear-gradient(135deg, #d1d5db, #9ca3af); color: #1a1a1a }
+.lb-rank.bronze { background: linear-gradient(135deg, #d97706, #b45309); color: #fff }
+.lb-rank.normal { background: rgba(255,255,255,0.06); color: var(--text-secondary) }
+.lb-info { flex: 1; display: flex; flex-direction: column; gap: 2px }
+.lb-name { font-size: 14px; font-family: "Gilroy-Bold", sans-serif }
+.lb-details { font-size: 11px; color: var(--text-secondary); font-family: "Gilroy", sans-serif }
+.lb-score {
+  font-size: 18px; font-family: "Gilroy-Bold", sans-serif;
+  color: var(--accent-yellow); text-align: right
+}
+
+/* ===== Session Summary ===== */
+#session-overlay {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  z-index: 250; opacity: 0; pointer-events: none; transition: opacity 0.4s
+}
+#session-overlay.active { opacity: 1; pointer-events: auto }
+#session-card {
+  width: 360px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border); border-radius: 20px;
+  box-shadow: var(--glass-shadow); color: var(--text-primary);
+  padding: 28px; transform: translateY(30px) scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); cursor: pointer
+}
+#session-overlay.active #session-card { transform: translateY(0) scale(1) }
+#session-header {
+  text-align: center; font-size: 14px; font-family: "Gilroy-Bold", sans-serif;
+  letter-spacing: 3px; color: var(--accent-yellow); margin-bottom: 20px;
+  filter: drop-shadow(0 0 6px rgba(251,191,36,0.3))
+}
+#session-stats { display: flex; flex-direction: column; gap: 12px }
+.session-stat {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,0.03)
+}
+.stat-label {
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-secondary); font-family: "Gilroy", sans-serif
+}
+.stat-value {
+  font-size: 20px; font-family: "Gilroy-Bold", sans-serif;
+  color: var(--text-primary)
+}
+
+/* ===== Score glow pulse ===== */
+@keyframes glowPulse {
+  0% { box-shadow: var(--glass-shadow), 0 0 0 0 rgba(251,191,36,0) }
+  50% { box-shadow: var(--glass-shadow), 0 0 24px 4px rgba(251,191,36,0.15) }
+  100% { box-shadow: var(--glass-shadow), 0 0 0 0 rgba(251,191,36,0) }
+}
+#drift-card.glow { animation: glowPulse 0.6s ease-out }
